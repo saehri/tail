@@ -1,36 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About Tailo
 
-## Getting Started
+**Tailo is a time management application specially designed for students. With Tailo, you can track assignments, quizzes, projects, habits, and much more. Tailo incorporates gamification to keep you motivated. Enjoy a fun learning experience with interactive features that make scheduling and organizing schoolwork a breeze. Plan your daily tasks and monitor your progress in real-time. With Tailo, there are no more forgotten assignments or missed deadlines. Start today and discover how enjoyable learning can be with a more organized and focused approach!**
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+_Tailo adalah aplikasi manajemen waktu yang dibuat khusus untuk pelajar. Dengan Tailo, kamu bisa melacak tugas, kuis, proyek, kebiasaan, dan banyak lagi. Tailo menggunakan sistem gamifikasi di dalamnya untuk membuat kamu tetap termotivasi. Nikmati pengalaman belajar yang menyenangkan dengan fitur-fitur interaktif yang membuat mengatur waktu dan pekerjaan sekolah menjadi lebih mudah. Jadwalkan tugas harian, atur pengingat, dan pantau kemajuanmu secara real-time. Dengan Tailo, tak ada lagi tugas yang terlupakan atau deadline yang terlewat. Mulailah hari ini dan temukan betapa menyenangkannya belajar dengan cara yang lebih teratur dan terarah!_
