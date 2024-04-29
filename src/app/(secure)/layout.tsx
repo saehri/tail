@@ -1,5 +1,3 @@
-import Header from '@/components/header/header';
-import {ThemeProvider} from '@/components/theme-provider/ThemeProvider';
 import type {Metadata} from 'next';
 
 export const metadata: Metadata = {
@@ -7,16 +5,16 @@ export const metadata: Metadata = {
   description: '',
 };
 
+import Header from '@/components/header/header';
+
 export default function SecureLayout({
   children,
 }: Readonly<{children: React.ReactNode}>) {
   return (
     <main>
-      <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-        <Header />
+      <Header />
 
-        {children}
-      </ThemeProvider>
+      {children}
     </main>
   );
 }
