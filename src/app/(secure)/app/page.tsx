@@ -1,10 +1,9 @@
-import Link from 'next/link';
+import Header from '@/components/header/header';
 
 export default function AppHome() {
   return (
-    <div>
-      <h1>Tailo App Homepage</h1>
-      <Link href='/'>App</Link>
-    </div>
+    <>
+      <Header />
+    </>
   );
 }
