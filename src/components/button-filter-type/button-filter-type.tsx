@@ -35,6 +35,10 @@ export default function ButtonFilterType() {
     setSelectedType(newState);
   }
 
+  function clearSelections() {
+    setSelectedType((prev) => prev.map((tp) => ({...tp, selected: false})));
+  }
+
   return (
     <ButtonFilter
       open={open}
@@ -42,6 +46,7 @@ export default function ButtonFilterType() {
       selectedCategory={selectedType}
       toggleSelected={toggleSelected}
       label='Type'
+      clearSelections={clearSelections}
     />
   );
 }

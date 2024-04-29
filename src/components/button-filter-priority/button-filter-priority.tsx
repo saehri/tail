@@ -46,6 +46,12 @@ export default function ButtonFilterPriority() {
     setSelectedPriority(newState);
   }
 
+  function clearSelections() {
+    setSelectedPriority((prev) =>
+      prev.map((prt) => ({...prt, selected: false}))
+    );
+  }
+
   return (
     <ButtonFilter
       open={open}
@@ -53,6 +59,7 @@ export default function ButtonFilterPriority() {
       selectedCategory={selectedPriority}
       toggleSelected={toggleSelected}
       label='Priority'
+      clearSelections={clearSelections}
     />
   );
 }

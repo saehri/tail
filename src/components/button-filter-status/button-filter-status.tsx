@@ -50,6 +50,10 @@ export default function ButtonFilterStatus() {
     setSelectedStatus(newState);
   }
 
+  function clearSelections() {
+    setSelectedStatus((prev) => prev.map((sts) => ({...sts, selected: false})));
+  }
+
   return (
     <ButtonFilter
       open={open}
@@ -57,6 +61,7 @@ export default function ButtonFilterStatus() {
       selectedCategory={selectedStatus}
       toggleSelected={toggleSelected}
       label='Status'
+      clearSelections={clearSelections}
     />
   );
 }

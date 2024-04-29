@@ -11,6 +11,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandSeparator,
 } from '@/components/ui/command';
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import {Badge} from './badge';
@@ -28,6 +29,7 @@ interface ButtonFilterProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   toggleSelected: (category: string) => void;
   label: string;
+  clearSelections: () => void;
 }
 
 export default function ButtonFilter(props: ButtonFilterProps) {
@@ -67,6 +69,15 @@ export default function ButtonFilter(props: ButtonFilterProps) {
                 </div>
               </CommandItem>
             ))}
+
+            <CommandSeparator />
+            <CommandItem
+              value='clear selections'
+              onSelect={props.clearSelections}
+              className='justify-center'
+            >
+              Clear Selections
+            </CommandItem>
           </CommandGroup>
         </Command>
       </PopoverContent>
