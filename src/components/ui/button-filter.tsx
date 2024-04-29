@@ -79,20 +79,30 @@ type SelectedStatusViewerProps = {
 };
 
 function SelectedStatusViewer(props: SelectedStatusViewerProps) {
+  const selectedCount = props.selectedCategory.filter(
+    (ctg) => ctg.selected
+  ).length;
+
   return (
-    <span className='flex gap-1'>
-      {props.selectedCategory.map((status) => (
-        <Badge
-          key={status.value}
-          variant='secondary'
-          className={twMerge(
-            'capitalize',
-            status.selected ? 'visible' : 'hidden'
-          )}
-        >
-          {status.value}
-        </Badge>
-      ))}
-    </span>
+    <>
+      {selectedCount > 2 ? (
+        <Badge variant='secondary'>{selectedCount} selected</Badge>
+      ) : (
+        <span className='flex gap-1'>
+          {props.selectedCategory.map((status) => (
+            <Badge
+              key={status.value}
+              variant='secondary'
+              className={twMerge(
+                'capitalize',
+                status.selected ? 'visible' : 'hidden'
+              )}
+            >
+              {status.value}
+            </Badge>
+          ))}
+        </span>
+      )}
+    </>
   );
 }
