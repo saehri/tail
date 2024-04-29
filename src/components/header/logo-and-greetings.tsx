@@ -5,9 +5,9 @@ export default function LogoAndGreetings() {
 
   return (
     <section className='flex flex-col-reverse leading-4'>
-      <p className='text-slate-900 dark:text-slate-50 font-semibold'>TAILO</p>
+      <p className='text-foreground font-semibold'>TAILO</p>
 
-      <small className='text-slate-500 dark:text-slate-300'>{greetings}</small>
+      <small className='text-muted-foreground'>{greetings}</small>
     </section>
   );
 }

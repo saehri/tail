@@ -1,5 +1,5 @@
 const greetingMessages: string[] = [
-  'Welcome Back to',
+  'Welcome back to:',
   "Let's get shit done with",
   'Live, laugh, and',
   'Living with razle dazle because of',

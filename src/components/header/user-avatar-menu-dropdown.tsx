@@ -27,7 +27,7 @@ export default function UserAvatarMenuDropdown() {
       <DropdownMenuContent align='end' className='min-w-60'>
         <DropdownMenuLabel className='flex flex-col'>
           <span>Username</span>
-          <span className='text-slate-500 dark:text-slate-300 text-[.8rem] font-normal'>
+          <span className='text-muted-foreground text-[.8rem] font-normal'>
             bahreesaepul1@gmail.com
           </span>
         </DropdownMenuLabel>
