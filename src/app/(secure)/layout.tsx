@@ -1,3 +1,4 @@
+import Header from '@/components/header/header';
 import {ThemeProvider} from '@/components/theme-provider/ThemeProvider';
 import type {Metadata} from 'next';
 
@@ -10,8 +11,12 @@ export default function SecureLayout({
   children,
 }: Readonly<{children: React.ReactNode}>) {
   return (
-    <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-      {children}
-    </ThemeProvider>
+    <main>
+      <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+        <Header />
+
+        {children}
+      </ThemeProvider>
+    </main>
   );
 }
