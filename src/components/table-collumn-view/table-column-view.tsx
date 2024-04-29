@@ -49,7 +49,9 @@ export default function TableColumnView() {
               onClick={() => toggleColumns(column.name)}
               className='flex gap-2'
             >
-              <span className='w-4 h-4'>{column.visible && <CheckIcon />}</span>
+              <span className={!column.visible ? 'opacity-0' : 'opacity-100'}>
+                {<CheckIcon />}
+              </span>
               <span>{column.name}</span>
             </DropdownMenuItem>
           ))}
