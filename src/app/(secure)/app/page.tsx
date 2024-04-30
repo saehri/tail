@@ -5,6 +5,7 @@ import ButtonFilterStatus from '@/components/button-filter-status/button-filter-
 import ButtonFilterPriority from '@/components/button-filter-priority/button-filter-priority';
 import ButtonFilterType from '@/components/button-filter-type/button-filter-type';
 import TaskTable from '@/components/task-table/task-table';
+import NewTaskDialog from '@/components/new-task-dialog/new-task-dialog';
 
 export default function AppHome() {
   return (
@@ -18,7 +19,11 @@ export default function AppHome() {
           <ButtonFilterType />
         </div>
 
-        <TableColumnView />
+        <div className='flex gap-2 items-center'>
+          <NewTaskDialog />
+
+          <TableColumnView />
+        </div>
       </section>
 
       <section className='max-w-screen-xl mx-auto px-4'>
