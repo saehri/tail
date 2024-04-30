@@ -54,7 +54,7 @@ export default function TaskTableRow(props: TaskTypes) {
 
       <div className='flex gap-2 items-center'>
         <span className='text-muted-foreground'>
-          <LabelIcon variant={props.dueDate} />
+          <LabelIcon variant={'dueDate'} />
         </span>
         <span>{props.dueDate}</span>
       </div>
@@ -84,6 +84,7 @@ function LabelIcon(props: {variant: string}) {
     ongoing: <StopwatchIcon />,
     pending: <DiscIcon />,
     done: <CheckCircledIcon />,
+    dueDate: <StopwatchIcon />,
   };
 
   return icons[props.variant];
