@@ -27,7 +27,7 @@ type TaskTypes = {
 
 export default function TaskTableRow(props: TaskTypes) {
   return (
-    <div className='p-2 items-center grid grid-cols-[51%,_10%,_10%,_13%,_10%,_6%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default'>
+    <div className='p-2 items-center grid grid-cols-[51%,_10%,_10%,_13%,_10%,_6%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
       <div className='flex gap-2 w-[90%]'>
         <Badge variant='outline' className='capitalize whitespace-nowrap'>
           {props.subjects}
