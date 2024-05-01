@@ -13,8 +13,10 @@ export default function TaskColsDueDate(props: TaskColsDueDate) {
         day: '2-digit',
         month: 'long',
         year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
       })
-    : '';
+    : 'Not set';
 
   return (
     <div className='flex gap-2 items-center'>

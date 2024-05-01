@@ -10,7 +10,7 @@ import TaskColsPriority from './table-row-primitives/task-cols-priority';
 
 export default function TaskTableRow(props: Task) {
   return (
-    <div className='p-2 items-center grid grid-cols-[51%,_10%,_10%,_13%,_10%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
+    <div className='p-2 items-center grid grid-cols-[_1fr,_10%,_10%,_25%,_10%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
       <TaskColsTitle title={props.title} subjects={props.subjects} />
       <TaskColsTaskType type={props.type} />
       <TaskColsStatus status={props.status} />
