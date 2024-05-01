@@ -4,10 +4,10 @@ export default function LogoAndGreetings() {
   const greetings = generateGreetings();
 
   return (
-    <section className='flex flex-col-reverse leading-4'>
+    <div className='flex flex-col-reverse leading-4'>
       <p className='text-foreground font-semibold'>TAIL.io</p>
 
       <small className='text-muted-foreground'>{greetings}</small>
-    </section>
+    </div>
   );
 }
