@@ -38,11 +38,12 @@ export type TaskPriorityTypes = 'low' | 'medium' | 'high';
 
 export interface Task {
   id?: string;
+  progress?: string;
   title: string;
   type: TaskTypeTypes;
   status: TaskStatusTypes;
-  dueDate: string;
   priority: TaskPriorityTypes;
-  progress: string;
+  description: string;
   subjects: string;
+  dueDate?: string;
 }

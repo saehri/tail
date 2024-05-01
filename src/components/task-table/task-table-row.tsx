@@ -2,80 +2,20 @@
 
 import {Task} from '@/redux/todos/todoSlice';
 
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  CheckCircledIcon,
-  CircleIcon,
-  ClipboardIcon,
-  DiscIcon,
-  FileIcon,
-  StopwatchIcon,
-} from '@radix-ui/react-icons';
-import {Badge} from '../ui/badge';
+import TaskColsTitle from './table-row-primitives/task-cols-title';
+import TaskColsTaskType from './table-row-primitives/task-cols-task-type';
+import TaskColsStatus from './table-row-primitives/task-cols-status';
+import TaskColsDueDate from './table-row-primitives/task-cols-duedate';
+import TaskColsPriority from './table-row-primitives/task-cols-priority';
 
 export default function TaskTableRow(props: Task) {
   return (
-    <div className='p-2 items-center grid grid-cols-[51%,_10%,_10%,_13%,_10%,_6%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
-      <div className='flex gap-2 w-[90%]'>
-        <Badge variant='outline' className='capitalize whitespace-nowrap'>
-          {props.subjects}
-        </Badge>
-
-        <span className='block whitespace-nowrap overflow-hidden text-ellipsis'>
-          {props.title}
-        </span>
-      </div>
-
-      <div className='flex gap-2 items-center capitalize'>
-        <span className='text-muted-foreground'>
-          <LabelIcon variant={props.type} />
-        </span>
-        <span>{props.type}</span>
-      </div>
-
-      <div className='flex gap-2 items-center capitalize'>
-        <span className='text-muted-foreground'>
-          <LabelIcon variant={props.status} />
-        </span>
-        <span> {props.status}</span>
-      </div>
-
-      <div className='flex gap-2 items-center'>
-        <span className='text-muted-foreground'>
-          <LabelIcon variant={'dueDate'} />
-        </span>
-        <span>{props.dueDate}</span>
-      </div>
-
-      <div className='flex gap-2 items-center capitalize'>
-        <span className='text-muted-foreground'>
-          <LabelIcon variant={props.priority} />
-        </span>
-        <span>{props.priority}</span>
-      </div>
-
-      <div className='flex gap-2 items-center capitalize'>
-        <span>{props.progress}</span>
-      </div>
+    <div className='p-2 items-center grid grid-cols-[51%,_10%,_10%,_13%,_10%] border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
+      <TaskColsTitle title={props.title} subjects={props.subjects} />
+      <TaskColsTaskType type={props.type} />
+      <TaskColsStatus status={props.status} />
+      <TaskColsDueDate dueDate={props.dueDate} />
+      <TaskColsPriority priority={props.priority} />
     </div>
   );
-}
-
-function LabelIcon(props: {variant: string}) {
-  const icons: Record<string, React.ReactNode> = {
-    task: <ClipboardIcon />,
-    quiz: <FileIcon />,
-    low: <ArrowDownIcon />,
-    medium: <ArrowRightIcon />,
-    high: <ArrowUpIcon />,
-    todo: <CircleIcon />,
-    ongoing: <StopwatchIcon />,
-    pending: <DiscIcon />,
-    done: <CheckCircledIcon />,
-    dueDate: <StopwatchIcon />,
-  };
-
-  return icons[props.variant];
 }

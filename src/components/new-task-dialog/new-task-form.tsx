@@ -42,43 +42,28 @@ import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover';
 import {Calendar} from '../ui/calendar';
 import TimeSelector from './time-selector';
 
+import {useAppDispatch} from '@/redux/utils';
+import {Task, todoAdded} from '@/redux/todos/todoSlice';
+
 const formSchema = z.object({
   title: z
     .string()
     .trim()
     .min(2, {message: 'Title must be at least 2 characters.'})
     .max(250, {message: 'Title is too long'}),
-  type: z.string().trim().min(1, {message: 'This field cannot be empty'}),
+  type: z.enum(['task', 'quiz']),
+  status: z.enum(['todo', 'ongoing', 'pending', 'done']),
+  priority: z.enum(['low', 'medium', 'high']),
   description: z.string().trim().max(250, {
     message: 'Description is too long, max characters is 250 characters.',
   }),
-  status: z.string().trim().min(1, {message: 'This field cannot be empty'}),
   subjects: z.string(),
-  priority: z.string().trim().min(1, {message: 'This field cannot be empty'}),
-  dueDate: z.date(),
+  dueDate: z.date().optional(),
 });
 
-/* 
-TODO
-1. The form should be able to handle following inputs:
-[-] Task title
-[-] Task description
-[-] Task type (dropdown | select)
-[] Due date (date picker)
-[] Task priority (dropdown | select)
-[-] Subjects (dropdown | select)
-[-] Task status (dropdown | select)
-*/
-
-/* 
-TITLE & TASK TYPE
-TASK DESCRIPTION
-SUBJECTS & STATUS
-PRIORITY & DUE DATE
-SUBMIT
-*/
-
 export default function NewTaskForm() {
+  const dispatch = useAppDispatch();
+
   // The code bellow define the initial state and structures of the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,12 +74,29 @@ export default function NewTaskForm() {
       status: 'todo',
       subjects: '-',
       priority: 'low',
+      dueDate: undefined,
     },
   });
 
   /* @return void and take values (form structures). Used to handle submit event of the form */
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    let payload: Task;
+
+    if (values.dueDate) {
+      payload = {
+        ...values,
+        id: '01',
+        dueDate: values.dueDate.toISOString(),
+      };
+    } else {
+      payload = {
+        ...values,
+        id: '01',
+        dueDate: undefined,
+      };
+    }
+
+    dispatch(todoAdded(payload));
   }
 
   function setDateValue(date: Date) {
@@ -246,12 +248,7 @@ export default function NewTaskForm() {
               )}
             />
 
-            {form.getValues('dueDate') ? (
-              <TimeSelector
-                setDateValue={setDateValue}
-                currentDate={form.getValues('dueDate')}
-              />
-            ) : (
+            {form.getValues('dueDate') === undefined ? (
               <Button
                 type='button'
                 variant='outline'
@@ -261,6 +258,11 @@ export default function NewTaskForm() {
                 00 : 00
                 <ClockIcon className='text-muted-foreground' />
               </Button>
+            ) : (
+              <TimeSelector
+                setDateValue={setDateValue}
+                currentDate={form.getValues('dueDate') as Date}
+              />
             )}
           </div>
         </div>

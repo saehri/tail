@@ -1,6 +1,6 @@
 'use client';
 
-import {Dispatch, SetStateAction, useState} from 'react';
+import {useState} from 'react';
 
 import {ClockIcon} from '@radix-ui/react-icons';
 import {Button} from '../ui/button';
