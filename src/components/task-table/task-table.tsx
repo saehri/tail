@@ -3,52 +3,33 @@
 import TaskTableHeader from './task-table-header';
 import TaskTableRow from './task-table-row';
 
-type TaskTypeTypes = 'task' | 'quiz';
-type TaskStatusTypes = 'todo' | 'ongoing' | 'pending' | 'done';
-type TaskPriorityTypes = 'low' | 'medium' | 'high';
-type TaskTypes = {
-  id: string;
-  title: string;
-  type: TaskTypeTypes;
-  status: TaskStatusTypes;
-  dueDate: string;
-  priority: TaskPriorityTypes;
-  progress: string;
-  subjects: string;
-};
-
-const dummyTaskData: TaskTypes[] = [
-  {
-    id: 'TASK-01',
-    title:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur odio, cumque quam commodi veniam placeat!',
-    type: 'task',
-    priority: 'medium',
-    dueDate: '1 May 2024',
-    status: 'todo',
-    progress: '2/5',
-    subjects: 'Software Analysis and Design',
-  },
-  {
-    id: 'TASK-02',
-    title:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur odio, cumque quam commodi veniam placeat!',
-    type: 'quiz',
-    priority: 'high',
-    dueDate: '31 May 2024',
-    status: 'ongoing',
-    progress: '0/1',
-    subjects: 'Machine Learning',
-  },
-];
+import {selectTodos} from '@/redux/todos/todoSlice';
+import {useAppSelector} from '@/redux/utils';
 
 export default function TaskTable() {
   return (
     <>
       <TaskTableHeader />
 
-      {dummyTaskData.map((task) => (
-        <TaskTableRow {...task} key={task.id} />
+      <TaskRows />
+    </>
+  );
+}
+
+function TaskRows() {
+  const todos = useAppSelector(selectTodos);
+
+  if (!todos.length)
+    return (
+      <div className='p-2 flex justify-center items-center border border-border border-t-0 tracking-tight bg-background hover:bg-secondary/70 last:rounded-br-md last:rounded-bl-md cursor-default text-sm'>
+        There is nothing todo.
+      </div>
+    );
+
+  return (
+    <>
+      {todos.map((task) => (
+        <TaskTableRow {...task} key={task.id as string} />
       ))}
     </>
   );

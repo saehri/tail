@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {Karla} from 'next/font/google';
 import './globals.css';
 import {ThemeProvider} from '@/components/theme-provider/ThemeProvider';
+import StoreProvider from '@/components/store-provider/store-provider';
 
 const karla = Karla({subsets: ['latin']});
 
@@ -24,7 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <StoreProvider>{children}</StoreProvider>
         </ThemeProvider>
       </body>
     </html>
