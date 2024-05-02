@@ -6,9 +6,8 @@ import {ClipboardIcon, FileIcon} from '@radix-ui/react-icons';
 import {useAppDispatch, useAppSelector} from '@/redux/utils';
 import {
   TaskTypeTypes,
-  clearFilterKeywords,
   selectFilterType,
-  typeFilterToggled,
+  setKeywordsForTypeFilter,
 } from '@/redux/todos/todoSlice';
 
 const itemCategories = [
@@ -29,11 +28,7 @@ export default function ButtonFilterType() {
   const [open, setOpen] = useState(false);
 
   function toggleSelected(value: string) {
-    dispatch(typeFilterToggled(value as TaskTypeTypes));
-  }
-
-  function clearSelections() {
-    dispatch(clearFilterKeywords(null));
+    dispatch(setKeywordsForTypeFilter(value as TaskTypeTypes));
   }
 
   return (
@@ -44,7 +39,6 @@ export default function ButtonFilterType() {
       categories={itemCategories}
       toggleSelected={toggleSelected}
       label='Type'
-      clearSelections={clearSelections}
     />
   );
 }

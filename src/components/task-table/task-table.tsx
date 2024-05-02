@@ -9,6 +9,7 @@ import {
   selectFilterPriority,
   selectFilterStatus,
   selectFilterType,
+  selectSearchKeywords,
   selectTodoDisplay,
 } from '@/redux/todos/todoSlice';
 import {useAppDispatch, useAppSelector} from '@/redux/utils';
@@ -31,6 +32,7 @@ function TaskRows() {
   const filterStatus = useAppSelector(selectFilterStatus);
   const filterPriority = useAppSelector(selectFilterPriority);
   const filterType = useAppSelector(selectFilterType);
+  const searchKeywords = useAppSelector(selectSearchKeywords);
 
   useEffect(() => {
     dispatch(
@@ -38,9 +40,15 @@ function TaskRows() {
         status: filterStatus,
         priority: filterPriority,
         type: filterType,
+        searchKeywords,
       })
     );
-  }, [filterPriority.length, filterType.length, filterStatus.length]);
+  }, [
+    filterPriority.length,
+    filterType.length,
+    filterStatus.length,
+    searchKeywords.length,
+  ]);
 
   if (!todos.length)
     return (

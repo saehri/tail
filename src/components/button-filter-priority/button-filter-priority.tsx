@@ -3,9 +3,7 @@
 import {useState} from 'react';
 import {
   TaskPriorityTypes,
-  TaskStatusTypes,
-  clearFilterKeywords,
-  priorityFilterToggled,
+  setKeywordsForPriorityFilter,
   selectFilterPriority,
 } from '@/redux/todos/todoSlice';
 import {useAppDispatch, useAppSelector} from '@/redux/utils';
@@ -47,12 +45,9 @@ export default function ButtonFilterPriority() {
   const filters = useAppSelector(selectFilterPriority);
 
   function toggleSelected(value: string) {
-    dispatch(priorityFilterToggled(value as TaskPriorityTypes));
+    dispatch(setKeywordsForPriorityFilter(value as TaskPriorityTypes));
   }
 
-  function clearSelections() {
-    dispatch(clearFilterKeywords(null));
-  }
   return (
     <ButtonFilter
       open={open}
@@ -61,7 +56,6 @@ export default function ButtonFilterPriority() {
       selected={filters}
       toggleSelected={toggleSelected}
       label='Priority'
-      clearSelections={clearSelections}
     />
   );
 }

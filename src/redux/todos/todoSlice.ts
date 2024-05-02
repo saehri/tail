@@ -5,15 +5,16 @@ export interface Todo {
   todos: Task[];
   processed: Task[];
   state: 'fetching' | 'syncing' | 'uploading' | 'idle';
-  filterStatus: TaskStatusTypes[];
-  filterPriority: TaskPriorityTypes[];
-  filterType: TaskTypeTypes[];
+  filterStatusKeywords: TaskStatusTypes[];
+  filterPriorityKeywords: TaskPriorityTypes[];
+  filterTypeKeywords: TaskTypeTypes[];
+  searchKeywords: string;
 }
 
 const dummyData: Task[] = [
   {
     id: '01',
-    title: 'Number 1',
+    title: 'Create a presentation about the types of learning',
     description: 'lore, ipsum',
     priority: 'low',
     status: 'todo',
@@ -23,7 +24,7 @@ const dummyData: Task[] = [
   },
   {
     id: '02',
-    title: 'Number 2',
+    title: 'Session 14 - Stakeholders and Consumer',
     description: 'lore, ipsum',
     priority: 'medium',
     status: 'pending',
@@ -33,7 +34,7 @@ const dummyData: Task[] = [
   },
   {
     id: '03',
-    title: 'Number 3',
+    title: 'Build a small Chat Bot',
     description: 'lore, ipsum',
     priority: 'high',
     status: 'ongoing',
@@ -43,11 +44,11 @@ const dummyData: Task[] = [
   },
   {
     id: '04',
-    title: 'Number 4',
+    title: 'Codes the UI for the expense tracker app',
     description: 'lore, ipsum',
     priority: 'high',
     status: 'done',
-    subjects: 'Artificial Intelligence',
+    subjects: 'Object Oriented Programming',
     dueDate: undefined,
     type: 'quiz',
   },
@@ -57,48 +58,48 @@ const initialState: Todo = {
   todos: [...dummyData],
   processed: [...dummyData],
   state: 'idle',
-  filterStatus: [],
-  filterPriority: [],
-  filterType: [],
+  filterStatusKeywords: [],
+  filterPriorityKeywords: [],
+  filterTypeKeywords: [],
+  searchKeywords: '',
 };
 
 export const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    todoAdded(state, action: PayloadAction<Task>) {
+    addTodo(state, action: PayloadAction<Task>) {
       state.todos.unshift(action.payload);
       state.processed.unshift(action.payload);
     },
-    statusFilterToggled(state, action: PayloadAction<TaskStatusTypes>) {
-      if (state.filterStatus.includes(action.payload)) {
-        state.filterStatus = state.filterStatus.filter(
+    setKeywordsForStatusFilter(state, action: PayloadAction<TaskStatusTypes>) {
+      if (state.filterStatusKeywords.includes(action.payload)) {
+        state.filterStatusKeywords = state.filterStatusKeywords.filter(
           (status) => status !== action.payload
         );
-      } else state.filterStatus.push(action.payload);
+      } else state.filterStatusKeywords.push(action.payload);
     },
-    priorityFilterToggled(state, action: PayloadAction<TaskPriorityTypes>) {
-      if (state.filterPriority.includes(action.payload)) {
-        state.filterPriority = state.filterPriority.filter(
+    setKeywordsForPriorityFilter(
+      state,
+      action: PayloadAction<TaskPriorityTypes>
+    ) {
+      if (state.filterPriorityKeywords.includes(action.payload)) {
+        state.filterPriorityKeywords = state.filterPriorityKeywords.filter(
           (priority) => priority !== action.payload
         );
-      } else state.filterPriority.push(action.payload);
+      } else state.filterPriorityKeywords.push(action.payload);
     },
-    typeFilterToggled(state, action: PayloadAction<TaskTypeTypes>) {
-      if (state.filterType.includes(action.payload)) {
-        state.filterType = state.filterType.filter(
+    setKeywordsForTypeFilter(state, action: PayloadAction<TaskTypeTypes>) {
+      if (state.filterTypeKeywords.includes(action.payload)) {
+        state.filterTypeKeywords = state.filterTypeKeywords.filter(
           (type) => type !== action.payload
         );
-      } else state.filterType.push(action.payload);
+      } else state.filterTypeKeywords.push(action.payload);
     },
-    filterTodos(
-      state,
-      action: PayloadAction<{
-        status: TaskStatusTypes[];
-        priority: TaskPriorityTypes[];
-        type: TaskTypeTypes[];
-      }>
-    ) {
+    setSearchKeyword(state, action: PayloadAction<string>) {
+      state.searchKeywords = action.payload;
+    },
+    filterTodos(state, action: PayloadAction<FilterTodoPayloadTypes>) {
       const filterCategory = action.payload;
       const status: TaskStatusTypes[] = filterCategory.status.length
         ? filterCategory.status
@@ -114,13 +115,17 @@ export const todoSlice = createSlice({
         (todo) =>
           status.includes(todo.status) &&
           priority.includes(todo.priority) &&
-          type.includes(todo.type)
+          type.includes(todo.type) &&
+          todo.title
+            .toLowerCase()
+            .includes(action.payload.searchKeywords.toLowerCase())
       );
     },
     clearFilterKeywords(state, _) {
-      state.filterStatus = [];
-      state.filterPriority = [];
-      state.filterType = [];
+      state.filterStatusKeywords = [];
+      state.filterPriorityKeywords = [];
+      state.filterTypeKeywords = [];
+      state.searchKeywords = '';
     },
   },
 });
@@ -128,11 +133,12 @@ export const todoSlice = createSlice({
 export default todoSlice.reducer;
 
 export const {
-  todoAdded,
+  addTodo,
   filterTodos,
-  statusFilterToggled,
-  priorityFilterToggled,
-  typeFilterToggled,
+  setKeywordsForStatusFilter,
+  setKeywordsForPriorityFilter,
+  setKeywordsForTypeFilter,
+  setSearchKeyword,
   clearFilterKeywords,
 } = todoSlice.actions;
 
@@ -143,12 +149,22 @@ export const selectTodos = (state: RootState) => state.todos.todos;
 export const selectState = (state: RootState) => state.todos.state;
 export const selectTodoDisplay = (state: RootState) => state.todos.processed;
 export const selectFilterStatus = (state: RootState) =>
-  state.todos.filterStatus;
+  state.todos.filterStatusKeywords;
 export const selectFilterPriority = (state: RootState) =>
-  state.todos.filterPriority;
-export const selectFilterType = (state: RootState) => state.todos.filterType;
+  state.todos.filterPriorityKeywords;
+export const selectFilterType = (state: RootState) =>
+  state.todos.filterTypeKeywords;
+export const selectSearchKeywords = (state: RootState) =>
+  state.todos.searchKeywords;
 
 // PRIMITIVES TYPES
+type FilterTodoPayloadTypes = {
+  status: TaskStatusTypes[];
+  priority: TaskPriorityTypes[];
+  type: TaskTypeTypes[];
+  searchKeywords: string;
+};
+
 export type TaskTypeTypes = 'task' | 'quiz';
 export type TaskStatusTypes = 'todo' | 'ongoing' | 'pending' | 'done';
 export type TaskPriorityTypes = 'low' | 'medium' | 'high';

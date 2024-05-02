@@ -43,7 +43,7 @@ import {Calendar} from '../ui/calendar';
 import TimeSelector from './time-selector';
 
 import {useAppDispatch} from '@/redux/utils';
-import {Task, todoAdded} from '@/redux/todos/todoSlice';
+import {Task, addTodo} from '@/redux/todos/todoSlice';
 
 const formSchema = z.object({
   title: z
@@ -98,7 +98,7 @@ export default function NewTaskForm() {
       };
     }
 
-    dispatch(todoAdded(payload));
+    dispatch(addTodo(payload));
   }
 
   function setDateValue(date: Date) {

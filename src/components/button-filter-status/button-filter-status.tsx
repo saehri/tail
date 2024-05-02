@@ -5,8 +5,7 @@ import {useAppDispatch, useAppSelector} from '@/redux/utils';
 import {
   TaskStatusTypes,
   selectFilterStatus,
-  clearFilterKeywords,
-  statusFilterToggled,
+  setKeywordsForStatusFilter,
 } from '@/redux/todos/todoSlice';
 
 import ButtonFilter from '../ui/button-filter';
@@ -36,11 +35,7 @@ export default function ButtonFilterStatus() {
   const [open, setOpen] = useState(false);
 
   function toggleSelected(value: string) {
-    dispatch(statusFilterToggled(value as TaskStatusTypes));
-  }
-
-  function clearSelections() {
-    dispatch(clearFilterKeywords(null));
+    dispatch(setKeywordsForStatusFilter(value as TaskStatusTypes));
   }
 
   return (
@@ -51,7 +46,6 @@ export default function ButtonFilterStatus() {
         categories={filterCategory}
         toggleSelected={toggleSelected}
         label='Status'
-        clearSelections={clearSelections}
         selected={filters}
       />
     </>
