@@ -3,47 +3,45 @@
 import {useState} from 'react';
 import ButtonFilter from '../ui/button-filter';
 import {ClipboardIcon, FileIcon} from '@radix-ui/react-icons';
+import {useAppDispatch, useAppSelector} from '@/redux/utils';
+import {
+  TaskTypeTypes,
+  clearFilterKeywords,
+  selectFilterType,
+  typeFilterToggled,
+} from '@/redux/todos/todoSlice';
 
-type typeTypes = 'task' | 'quiz';
-type typeItemTypes = {
-  value: typeTypes;
-  selected: boolean;
-  icon: React.ReactNode;
-};
+const itemCategories = [
+  {
+    value: 'task',
+    icon: <ClipboardIcon />,
+  },
+  {
+    value: 'quiz',
+    icon: <FileIcon />,
+  },
+];
 
 export default function ButtonFilterType() {
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector(selectFilterType);
+
   const [open, setOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<typeItemTypes[]>([
-    {
-      value: 'task',
-      selected: false,
-      icon: <ClipboardIcon />,
-    },
-    {
-      value: 'quiz',
-      selected: false,
-      icon: <FileIcon />,
-    },
-  ]);
 
-  function toggleSelected(type: string) {
-    const newState = selectedType.slice(0).map((tp) => {
-      if (tp.value === type) return {...tp, selected: !tp.selected};
-      else return tp;
-    });
-
-    setSelectedType(newState);
+  function toggleSelected(value: string) {
+    dispatch(typeFilterToggled(value as TaskTypeTypes));
   }
 
   function clearSelections() {
-    setSelectedType((prev) => prev.map((tp) => ({...tp, selected: false})));
+    dispatch(clearFilterKeywords(null));
   }
 
   return (
     <ButtonFilter
       open={open}
       setOpen={setOpen}
-      selectedCategory={selectedType}
+      selected={filters}
+      categories={itemCategories}
       toggleSelected={toggleSelected}
       label='Type'
       clearSelections={clearSelections}

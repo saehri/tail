@@ -1,6 +1,15 @@
 'use client';
 
 import {useState} from 'react';
+import {
+  TaskPriorityTypes,
+  TaskStatusTypes,
+  clearFilterKeywords,
+  priorityFilterToggled,
+  selectFilterPriority,
+} from '@/redux/todos/todoSlice';
+import {useAppDispatch, useAppSelector} from '@/redux/utils';
+
 import ButtonFilter from '../ui/button-filter';
 import {
   ArrowDownIcon,
@@ -8,55 +17,48 @@ import {
   ArrowUpIcon,
 } from '@radix-ui/react-icons';
 
-type priorityTypes = 'low' | 'medium' | 'high';
-type priorityItemTypes = {
-  value: priorityTypes;
+type PriorityItemTypes = {
+  value: TaskPriorityTypes;
   selected: boolean;
   icon: React.ReactNode;
 };
 
+const filterCategory: PriorityItemTypes[] = [
+  {
+    value: 'low',
+    selected: false,
+    icon: <ArrowDownIcon />,
+  },
+  {
+    value: 'medium',
+    selected: false,
+    icon: <ArrowRightIcon />,
+  },
+  {
+    value: 'high',
+    selected: false,
+    icon: <ArrowUpIcon />,
+  },
+];
+
 export default function ButtonFilterPriority() {
   const [open, setOpen] = useState(false);
-  const [selectedPriority, setSelectedPriority] = useState<priorityItemTypes[]>(
-    [
-      {
-        value: 'low',
-        selected: false,
-        icon: <ArrowDownIcon />,
-      },
-      {
-        value: 'medium',
-        selected: false,
-        icon: <ArrowRightIcon />,
-      },
-      {
-        value: 'high',
-        selected: false,
-        icon: <ArrowUpIcon />,
-      },
-    ]
-  );
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector(selectFilterPriority);
 
-  function toggleSelected(priority: string) {
-    const newState = selectedPriority.slice(0).map((prt) => {
-      if (prt.value === priority) return {...prt, selected: !prt.selected};
-      else return prt;
-    });
-
-    setSelectedPriority(newState);
+  function toggleSelected(value: string) {
+    dispatch(priorityFilterToggled(value as TaskPriorityTypes));
   }
 
   function clearSelections() {
-    setSelectedPriority((prev) =>
-      prev.map((prt) => ({...prt, selected: false}))
-    );
+    dispatch(clearFilterKeywords(null));
   }
-
   return (
     <ButtonFilter
       open={open}
       setOpen={setOpen}
-      selectedCategory={selectedPriority}
+      categories={filterCategory}
+      selected={filters}
       toggleSelected={toggleSelected}
       label='Priority'
       clearSelections={clearSelections}

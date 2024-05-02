@@ -1,6 +1,14 @@
 'use client';
 
 import {useState} from 'react';
+import {useAppDispatch, useAppSelector} from '@/redux/utils';
+import {
+  TaskStatusTypes,
+  selectFilterStatus,
+  clearFilterKeywords,
+  statusFilterToggled,
+} from '@/redux/todos/todoSlice';
+
 import ButtonFilter from '../ui/button-filter';
 import {
   CheckCircledIcon,
@@ -9,59 +17,43 @@ import {
   StopwatchIcon,
 } from '@radix-ui/react-icons';
 
-type statusTypes = 'todo' | 'ongoing' | 'pending' | 'done';
-type statusItemTypes = {
-  value: statusTypes;
-  selected: boolean;
+type StatusItemTypes = {
+  value: TaskStatusTypes;
   icon: React.ReactNode;
 };
 
+const filterCategory: StatusItemTypes[] = [
+  {value: 'todo', icon: <CircleIcon />},
+  {value: 'ongoing', icon: <StopwatchIcon />},
+  {value: 'pending', icon: <RadiobuttonIcon />},
+  {value: 'done', icon: <CheckCircledIcon />},
+];
+
 export default function ButtonFilterStatus() {
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector(selectFilterStatus);
+
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<statusItemTypes[]>([
-    {
-      value: 'todo',
-      selected: false,
-      icon: <CircleIcon />,
-    },
-    {
-      value: 'ongoing',
-      selected: false,
-      icon: <StopwatchIcon />,
-    },
-    {
-      value: 'pending',
-      selected: false,
-      icon: <RadiobuttonIcon />,
-    },
-    {
-      value: 'done',
-      selected: false,
-      icon: <CheckCircledIcon />,
-    },
-  ]);
 
-  function toggleSelected(status: string) {
-    const newState = selectedStatus.slice(0).map((sts) => {
-      if (sts.value === status) return {...sts, selected: !sts.selected};
-      else return sts;
-    });
-
-    setSelectedStatus(newState);
+  function toggleSelected(value: string) {
+    dispatch(statusFilterToggled(value as TaskStatusTypes));
   }
 
   function clearSelections() {
-    setSelectedStatus((prev) => prev.map((sts) => ({...sts, selected: false})));
+    dispatch(clearFilterKeywords(null));
   }
 
   return (
-    <ButtonFilter
-      open={open}
-      setOpen={setOpen}
-      selectedCategory={selectedStatus}
-      toggleSelected={toggleSelected}
-      label='Status'
-      clearSelections={clearSelections}
-    />
+    <>
+      <ButtonFilter
+        open={open}
+        setOpen={setOpen}
+        categories={filterCategory}
+        toggleSelected={toggleSelected}
+        label='Status'
+        clearSelections={clearSelections}
+        selected={filters}
+      />
+    </>
   );
 }

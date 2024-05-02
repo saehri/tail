@@ -1,10 +1,17 @@
 'use client';
 
+import {useEffect} from 'react';
 import TaskTableHeader from './task-table-header';
 import TaskTableRow from './task-table-row';
 
-import {selectTodos} from '@/redux/todos/todoSlice';
-import {useAppSelector} from '@/redux/utils';
+import {
+  filterTodos,
+  selectFilterPriority,
+  selectFilterStatus,
+  selectFilterType,
+  selectTodoDisplay,
+} from '@/redux/todos/todoSlice';
+import {useAppDispatch, useAppSelector} from '@/redux/utils';
 
 export default function TaskTable() {
   return (
@@ -17,7 +24,23 @@ export default function TaskTable() {
 }
 
 function TaskRows() {
-  const todos = useAppSelector(selectTodos);
+  const dispatch = useAppDispatch();
+
+  const todos = useAppSelector(selectTodoDisplay);
+
+  const filterStatus = useAppSelector(selectFilterStatus);
+  const filterPriority = useAppSelector(selectFilterPriority);
+  const filterType = useAppSelector(selectFilterType);
+
+  useEffect(() => {
+    dispatch(
+      filterTodos({
+        status: filterStatus,
+        priority: filterPriority,
+        type: filterType,
+      })
+    );
+  }, [filterPriority.length, filterType.length, filterStatus.length]);
 
   if (!todos.length)
     return (
@@ -27,10 +50,10 @@ function TaskRows() {
     );
 
   return (
-    <>
+    <div>
       {todos.map((task) => (
         <TaskTableRow {...task} key={task.id as string} />
       ))}
-    </>
+    </div>
   );
 }

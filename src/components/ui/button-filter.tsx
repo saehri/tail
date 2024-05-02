@@ -1,7 +1,6 @@
 'use client';
 
 import {Dispatch, SetStateAction} from 'react';
-import {twMerge} from 'tailwind-merge';
 
 import {Button} from '@/components/ui/button';
 import {PlusCircledIcon} from '@radix-ui/react-icons';
@@ -19,16 +18,16 @@ import {Checkbox} from './checkbox';
 
 type filterItemTypes = {
   value: string;
-  selected: boolean;
   icon: React.ReactNode;
 };
 
 interface ButtonFilterProps {
-  selectedCategory: filterItemTypes[];
+  label: string;
+  categories: filterItemTypes[];
+  selected: string[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   toggleSelected: (category: string) => void;
-  label: string;
   clearSelections: () => void;
 }
 
@@ -44,7 +43,7 @@ export default function ButtonFilter(props: ButtonFilterProps) {
           size='sm'
         >
           <PlusCircledIcon /> {props.label}
-          <SelectedStatusViewer selectedCategory={props.selectedCategory} />
+          <SelectedStatusViewer selectedCategories={props.selected} />
         </Button>
       </PopoverTrigger>
 
@@ -54,14 +53,14 @@ export default function ButtonFilter(props: ButtonFilterProps) {
           <CommandEmpty>No results found.</CommandEmpty>
 
           <CommandGroup>
-            {props.selectedCategory.map((status) => (
+            {props.categories.map((status) => (
               <CommandItem
                 key={status.value}
                 value={status.value}
                 onSelect={() => props.toggleSelected(status.value)}
                 className='capitalize flex gap-2 items-center'
               >
-                <Checkbox checked={status.selected} />
+                <Checkbox checked={props.selected.includes(status.value)} />
 
                 <div className='flex gap-2 items-center'>
                   <span>{status.icon}</span>
@@ -85,35 +84,23 @@ export default function ButtonFilter(props: ButtonFilterProps) {
   );
 }
 
-type SelectedStatusViewerProps = {
-  selectedCategory: {value: string; selected: boolean}[];
-};
+interface SelectedStatusViewer {
+  selectedCategories: string[];
+}
 
-function SelectedStatusViewer(props: SelectedStatusViewerProps) {
-  const selectedCount = props.selectedCategory.filter(
-    (ctg) => ctg.selected
-  ).length;
+function SelectedStatusViewer(props: SelectedStatusViewer) {
+  const selectedCount = props.selectedCategories.length;
+
+  if (selectedCount > 2)
+    return <Badge variant='secondary'>{selectedCount} selected</Badge>;
 
   return (
-    <>
-      {selectedCount > 2 ? (
-        <Badge variant='secondary'>{selectedCount} selected</Badge>
-      ) : (
-        <span className='flex gap-1'>
-          {props.selectedCategory.map((status) => (
-            <Badge
-              key={status.value}
-              variant='secondary'
-              className={twMerge(
-                'capitalize',
-                status.selected ? 'visible' : 'hidden'
-              )}
-            >
-              {status.value}
-            </Badge>
-          ))}
-        </span>
-      )}
-    </>
+    <span className='flex gap-1'>
+      {props.selectedCategories.map((value) => (
+        <Badge key={value} variant='secondary' className='capitalize'>
+          {value}
+        </Badge>
+      ))}
+    </span>
   );
 }
