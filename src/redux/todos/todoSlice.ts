@@ -72,6 +72,16 @@ export const todoSlice = createSlice({
       state.todos.unshift(action.payload);
       state.processed.unshift(action.payload);
     },
+    updateTodo(state, action: PayloadAction<UpdateTodoPayload>) {
+      // select an entry
+      state.todos = state.todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return {...todo, [action.payload.colName]: action.payload.value};
+        } else return todo;
+      });
+
+      state.processed = state.todos;
+    },
     setKeywordsForStatusFilter(state, action: PayloadAction<TaskStatusTypes>) {
       if (state.filterStatusKeywords.includes(action.payload)) {
         state.filterStatusKeywords = state.filterStatusKeywords.filter(
@@ -134,6 +144,7 @@ export default todoSlice.reducer;
 
 export const {
   addTodo,
+  updateTodo,
   filterTodos,
   setKeywordsForStatusFilter,
   setKeywordsForPriorityFilter,
@@ -163,6 +174,12 @@ type FilterTodoPayloadTypes = {
   priority: TaskPriorityTypes[];
   type: TaskTypeTypes[];
   searchKeywords: string;
+};
+
+type UpdateTodoPayload = {
+  id: string;
+  value: string | undefined;
+  colName: string;
 };
 
 export type TaskTypeTypes = 'task' | 'quiz';
