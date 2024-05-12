@@ -43,7 +43,7 @@ import {Calendar} from '../ui/calendar';
 import TimeSelector from './time-selector';
 
 import {useAppDispatch} from '@/redux/utils';
-import {Task, addTodo} from '@/redux/todos/todoSlice';
+import {Task, addTodo} from '@/redux/todos/todo-slice';
 
 const formSchema = z.object({
   title: z

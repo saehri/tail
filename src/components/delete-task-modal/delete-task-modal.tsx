@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import {Button} from '../ui/button';
-import {deleteTodo} from '@/redux/todos/todoSlice';
+import {deleteTodo} from '@/redux/todos/todo-slice';
 
 interface DeleteTaskModal {
   taskId: string;

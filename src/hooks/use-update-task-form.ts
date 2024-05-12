@@ -1,7 +1,7 @@
 import {useAppDispatch} from '@/redux/utils';
 import {ChangeEvent, FormEvent, useState} from 'react';
 
-import {updateTodo} from '@/redux/todos/todoSlice';
+import {updateTodo} from '@/redux/todos/todo-slice';
 
 interface useUpdateTaskForm {
   initialFormValue?: string;

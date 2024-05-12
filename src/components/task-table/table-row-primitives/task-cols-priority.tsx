@@ -1,6 +1,6 @@
 'use client';
 
-import {TaskPriorityTypes} from '@/redux/todos/todoSlice';
+import {TaskPriorityTypes} from '@/redux/todos/todo-slice';
 import TaskColsIcons from './task-cols-icons';
 
 interface TaskColsPriority {

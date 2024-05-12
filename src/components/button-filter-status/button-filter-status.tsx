@@ -6,7 +6,7 @@ import {
   TaskStatusTypes,
   selectFilterStatus,
   setKeywordsForStatusFilter,
-} from '@/redux/todos/todoSlice';
+} from '@/redux/todos/todo-slice';
 
 import ButtonFilter from '../ui/button-filter';
 import {

@@ -1,6 +1,6 @@
 'use client';
 
-import {selectSearchKeywords, setSearchKeyword} from '@/redux/todos/todoSlice';
+import {selectSearchKeywords, setSearchKeyword} from '@/redux/todos/todo-slice';
 import {useAppDispatch, useAppSelector} from '@/redux/utils';
 
 import {Input} from '@/components/ui/input';

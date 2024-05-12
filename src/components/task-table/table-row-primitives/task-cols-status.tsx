@@ -1,6 +1,6 @@
 'use client';
 
-import {TaskStatusTypes} from '@/redux/todos/todoSlice';
+import {TaskStatusTypes} from '@/redux/todos/todo-slice';
 import TaskColsIcons from './task-cols-icons';
 
 interface TaskColsStatus {

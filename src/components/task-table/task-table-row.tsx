@@ -1,6 +1,6 @@
 'use client';
 
-import {Task} from '@/redux/todos/todoSlice';
+import {Task} from '@/redux/todos/todo-slice';
 
 import TaskColsTitle from './table-row-primitives/task-cols-title';
 import TaskColsTaskType from './table-row-primitives/task-cols-task-type';

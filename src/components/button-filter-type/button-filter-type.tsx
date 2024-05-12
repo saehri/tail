@@ -8,7 +8,7 @@ import {
   TaskTypeTypes,
   selectFilterType,
   setKeywordsForTypeFilter,
-} from '@/redux/todos/todoSlice';
+} from '@/redux/todos/todo-slice';
 
 const itemCategories = [
   {

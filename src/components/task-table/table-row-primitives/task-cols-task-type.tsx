@@ -1,6 +1,6 @@
 'use client';
 
-import {TaskTypeTypes} from '@/redux/todos/todoSlice';
+import {TaskTypeTypes} from '@/redux/todos/todo-slice';
 import TaskColsIcons from './task-cols-icons';
 
 interface TaskColsTaskType {

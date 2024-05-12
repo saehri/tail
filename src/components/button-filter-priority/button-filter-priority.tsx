@@ -5,7 +5,7 @@ import {
   TaskPriorityTypes,
   setKeywordsForPriorityFilter,
   selectFilterPriority,
-} from '@/redux/todos/todoSlice';
+} from '@/redux/todos/todo-slice';
 import {useAppDispatch, useAppSelector} from '@/redux/utils';
 
 import ButtonFilter from '../ui/button-filter';

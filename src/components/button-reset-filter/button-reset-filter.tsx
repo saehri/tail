@@ -9,7 +9,7 @@ import {
   selectFilterStatus,
   selectFilterType,
   selectSearchKeywords,
-} from '@/redux/todos/todoSlice';
+} from '@/redux/todos/todo-slice';
 import {cn} from '@/lib/utils';
 
 export default function ResetFiltersButton() {
