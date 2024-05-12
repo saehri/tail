@@ -27,26 +27,28 @@ export default function TaskUpdaterTextArea(props: TaskUpdaterTextArea) {
 
   if (!form.isEditing) {
     return (
-      <button
-        className='flex flex-col gap-3 text-left w-full'
-        onClick={startEditing}
-        ref={placeholderRef}
-      >
+      <div className='flex flex-col gap-3 text-left w-full'>
         <span className='inline-block text-sm font-semibold text-foreground'>
           {props.label}
         </span>
 
-        {props.initialFormValue.length ? (
-          <pre className='font-[inherit] text-sm text-foreground p-2 rounded-md border border-border border-dashed w-full'>
-            {props.initialFormValue}
-          </pre>
-        ) : (
-          <span className='p-4 rounded-md text-[0.8rem] text-muted-foreground border border-border border-dashed w-full grid place-items-center'>
-            <Pencil1Icon />
-            Write something.
-          </span>
-        )}
-      </button>
+        <button
+          onClick={startEditing}
+          ref={placeholderRef}
+          className='grid place-items-center text-left'
+        >
+          {props.initialFormValue.length ? (
+            <pre className='font-[inherit] text-sm text-foreground p-2 rounded-md border border-border border-dashed w-full'>
+              {props.initialFormValue}
+            </pre>
+          ) : (
+            <span className='p-4 rounded-md text-[0.8rem] text-muted-foreground border border-border border-dashed w-full grid place-items-center'>
+              <Pencil1Icon />
+              Write something.
+            </span>
+          )}
+        </button>
+      </div>
     );
   }
 
