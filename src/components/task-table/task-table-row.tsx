@@ -33,6 +33,7 @@ import {
 } from '@radix-ui/react-icons';
 import TaskUpdaterDueDate from '../task-updater-form/task-updater-dueDate';
 import TaskUpdaterTextArea from '../task-updater-form/task-updater-textArea';
+import DeleteTaskModal from '../delete-task-modal/delete-task-modal';
 
 const taskTypeSelectItems = [
   {
@@ -167,6 +168,8 @@ export default function TaskTableRow(props: Task) {
               selectItems={taskStatusSelectItems}
             />
           </div>
+
+          <DeleteTaskModal taskId={props.id as string} />
         </section>
       </DialogContent>
     </Dialog>

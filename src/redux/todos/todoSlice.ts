@@ -3,7 +3,8 @@ import {RootState} from '../store';
 
 export interface Todo {
   todos: Task[];
-  processed: Task[];
+  actives: Task[];
+  inactives: Task[];
   state: 'fetching' | 'syncing' | 'uploading' | 'idle';
   filterStatusKeywords: TaskStatusTypes[];
   filterPriorityKeywords: TaskPriorityTypes[];
@@ -56,7 +57,8 @@ const dummyData: Task[] = [
 
 const initialState: Todo = {
   todos: [...dummyData],
-  processed: [...dummyData],
+  actives: [...dummyData],
+  inactives: [],
   state: 'idle',
   filterStatusKeywords: [],
   filterPriorityKeywords: [],
@@ -70,7 +72,7 @@ export const todoSlice = createSlice({
   reducers: {
     addTodo(state, action: PayloadAction<Task>) {
       state.todos.unshift(action.payload);
-      state.processed.unshift(action.payload);
+      state.actives.unshift(action.payload);
     },
     updateTodo(state, action: PayloadAction<UpdateTodoPayload>) {
       // select an entry
@@ -80,7 +82,11 @@ export const todoSlice = createSlice({
         } else return todo;
       });
 
-      state.processed = state.todos;
+      state.actives = state.todos;
+    },
+    deleteTodo(state, action: PayloadAction<string>) {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+      state.actives = state.todos;
     },
     setKeywordsForStatusFilter(state, action: PayloadAction<TaskStatusTypes>) {
       if (state.filterStatusKeywords.includes(action.payload)) {
@@ -121,7 +127,7 @@ export const todoSlice = createSlice({
         ? filterCategory.type
         : ['quiz', 'task'];
 
-      state.processed = state.todos.filter(
+      state.actives = state.todos.filter(
         (todo) =>
           status.includes(todo.status) &&
           priority.includes(todo.priority) &&
@@ -145,6 +151,7 @@ export default todoSlice.reducer;
 export const {
   addTodo,
   updateTodo,
+  deleteTodo,
   filterTodos,
   setKeywordsForStatusFilter,
   setKeywordsForPriorityFilter,
@@ -158,7 +165,7 @@ export const {
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectTodos = (state: RootState) => state.todos.todos;
 export const selectState = (state: RootState) => state.todos.state;
-export const selectTodoDisplay = (state: RootState) => state.todos.processed;
+export const selectTodoDisplay = (state: RootState) => state.todos.actives;
 export const selectFilterStatus = (state: RootState) =>
   state.todos.filterStatusKeywords;
 export const selectFilterPriority = (state: RootState) =>
