@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {ClockIcon} from '@radix-ui/react-icons';
 import {Button} from '../ui/button';
@@ -104,35 +104,34 @@ const timeMinutes: {value: number; label: string}[] = [
 export default function TimeSelector(props: TimeSelectorTypes) {
   const [open, setOpen] = useState<boolean>(false);
 
-  const [selectedHours, setSelectedHours] = useState<number>(
-    props.currentDate.getHours()
-  );
-  const [selectedMinutes, setSelectedMinutes] = useState<number>(
-    props.currentDate.getMinutes()
-  );
+  const [selectedTime, setSelectedTime] = useState([0, 0]);
 
   const [currentActive, setCurrentActive] = useState<0 | 1>(0);
 
-  function handleSelectHours(time: number) {
-    setSelectedHours(time);
+  function handleSelectHours(hours: number) {
+    setSelectedTime((time) => [hours, time[1]]);
 
     const date = props.currentDate;
-    date.setHours(time);
+    date.setHours(hours);
     props.setDateValue(date);
 
     setCurrentActive(1);
   }
 
-  function handleSelectMinutes(time: number) {
-    setSelectedMinutes(time);
+  function handleSelectMinutes(minutes: number) {
+    setSelectedTime((times) => [times[0], minutes]);
 
     const date = props.currentDate;
-    date.setMinutes(time);
+    date.setMinutes(minutes);
     props.setDateValue(date);
 
     setCurrentActive(0);
     setOpen(false);
   }
+
+  useEffect(() => {
+    setSelectedTime([0, 0]);
+  }, [props.currentDate]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -142,8 +141,8 @@ export default function TimeSelector(props: TimeSelectorTypes) {
           variant='outline'
           className='w-full flex gap-4 justify-between items-center font-normal'
         >
-          <RenderTime time={selectedHours.toString()} /> :{' '}
-          <RenderTime time={selectedMinutes.toString()} />
+          <RenderTime time={selectedTime[0].toString()} /> :{' '}
+          <RenderTime time={selectedTime[1].toString()} />
           <ClockIcon className='text-muted-foreground' />
         </Button>
       </PopoverTrigger>
@@ -156,7 +155,7 @@ export default function TimeSelector(props: TimeSelectorTypes) {
             onClick={() => setCurrentActive(0)}
             size='icon'
           >
-            <RenderTime time={selectedHours.toString()} />
+            <RenderTime time={selectedTime[0].toString()} />
           </Button>
           :
           <Button
@@ -165,7 +164,7 @@ export default function TimeSelector(props: TimeSelectorTypes) {
             onClick={() => setCurrentActive(1)}
             size='icon'
           >
-            <RenderTime time={selectedMinutes.toString()} />
+            <RenderTime time={selectedTime[1].toString()} />
           </Button>
         </div>
 
@@ -175,13 +174,13 @@ export default function TimeSelector(props: TimeSelectorTypes) {
           {currentActive === 0 ? (
             <TimeButtonSelector
               items={timeHours}
-              selectedTime={selectedHours}
+              selectedTime={selectedTime[0]}
               setSelected={handleSelectHours}
             />
           ) : (
             <TimeButtonSelector
               items={timeMinutes}
-              selectedTime={selectedMinutes}
+              selectedTime={selectedTime[1]}
               setSelected={handleSelectMinutes}
             />
           )}

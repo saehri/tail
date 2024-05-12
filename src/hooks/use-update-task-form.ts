@@ -13,8 +13,8 @@ export default function useUpdateTaskForm(props: useUpdateTaskForm) {
   const dispatch = useAppDispatch();
 
   const [isEditing, setEditing] = useState<boolean>(false);
-  const [formValue, setFormValue] = useState<string>(
-    props.initialFormValue ?? ''
+  const [formValue, setFormValue] = useState<string | undefined>(
+    props.initialFormValue
   );
 
   function endEditing() {
@@ -33,16 +33,17 @@ export default function useUpdateTaskForm(props: useUpdateTaskForm) {
     setEditing(false);
   }
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setFormValue(e.target.value);
-  }
+  // @handleFormValueChange
+  function handleFormValueChange(
+    value: string | undefined,
+    isSubmit: boolean = false
+  ) {
+    if (isSubmit) {
+      dispatch(updateTodo({id: props.taskId, value, colName: props.colName}));
+      return;
+    }
 
-  function handleSelectInputChange(value: string) {
-    dispatch(updateTodo({id: props.taskId, value, colName: props.colName}));
-  }
-
-  function handleDatePickerChange(value: string | undefined) {
-    dispatch(updateTodo({id: props.taskId, value, colName: props.colName}));
+    setFormValue(value);
   }
 
   return {
@@ -52,8 +53,6 @@ export default function useUpdateTaskForm(props: useUpdateTaskForm) {
     formValue,
     setFormValue,
     handleSubmit,
-    handleInputChange,
-    handleSelectInputChange,
-    handleDatePickerChange,
+    handleFormValueChange,
   };
 }

@@ -49,7 +49,7 @@ export default function TaskUpdaterDueDate(props: TaskUpdaterDueDate) {
                   : undefined
               }
               onSelect={(date) =>
-                form.handleDatePickerChange(date?.toISOString())
+                form.handleFormValueChange(date?.toISOString(), true)
               }
               disabled={(date: any) =>
                 date < new Date().setDate(new Date().getDate() - 1)
@@ -73,7 +73,7 @@ export default function TaskUpdaterDueDate(props: TaskUpdaterDueDate) {
       ) : (
         <TimeSelector
           setDateValue={(date) =>
-            form.handleDatePickerChange(date?.toISOString())
+            form.handleFormValueChange(date?.toISOString(), true)
           }
           currentDate={new Date(props.initialFormValue)}
         />

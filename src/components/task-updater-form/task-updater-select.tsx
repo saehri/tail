@@ -29,7 +29,7 @@ export default function TaskUpdaterSelect(props: TaskUpdaterSelect) {
       <Label>{props.label}</Label>
 
       <Select
-        onValueChange={form.handleSelectInputChange}
+        onValueChange={(value) => form.handleFormValueChange(value, true)}
         defaultValue={form.formValue}
       >
         <SelectTrigger>
