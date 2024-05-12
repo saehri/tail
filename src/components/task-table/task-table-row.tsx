@@ -24,10 +24,15 @@ import {
   ArrowDownIcon,
   ArrowRightIcon,
   ArrowUpIcon,
+  CheckCircledIcon,
+  CircleIcon,
   ClipboardIcon,
+  DiscIcon,
   FileIcon,
+  StopwatchIcon,
 } from '@radix-ui/react-icons';
 import TaskUpdaterDueDate from '../task-updater-form/task-updater-dueDate';
+import TaskUpdaterTextArea from '../task-updater-form/task-updater-textArea';
 
 const taskTypeSelectItems = [
   {
@@ -57,6 +62,31 @@ const taskPrioritySelectItems = [
     value: 'high',
     label: 'High',
     icon: <ArrowUpIcon className='text-muted-foreground' />,
+  },
+];
+
+const taskSubjectSelectItems = [{value: '-', label: '-'}];
+
+const taskStatusSelectItems = [
+  {
+    value: 'todo',
+    label: 'Todo',
+    icon: <CircleIcon className='text-muted-foreground' />,
+  },
+  {
+    value: 'ongoing',
+    label: 'Ongoing',
+    icon: <StopwatchIcon className='text-muted-foreground' />,
+  },
+  {
+    value: 'pending',
+    label: 'Pending',
+    icon: <DiscIcon className='text-muted-foreground' />,
+  },
+  {
+    value: 'done',
+    label: 'Done',
+    icon: <CheckCircledIcon className='text-muted-foreground' />,
   },
 ];
 
@@ -108,6 +138,33 @@ export default function TaskTableRow(props: Task) {
             <TaskUpdaterDueDate
               initialFormValue={props.dueDate}
               taskId={props.id as string}
+            />
+          </div>
+
+          <div>
+            <TaskUpdaterTextArea
+              label='Describe your task'
+              taskId={props.id as string}
+              initialFormValue={props.description}
+              colName='description'
+            />
+          </div>
+
+          <div className='grid grid-cols-2 gap-2'>
+            <TaskUpdaterSelect
+              label='Subjects'
+              colName='subjects'
+              initialFormValue={props.subjects}
+              taskId={props.id as string}
+              selectItems={taskSubjectSelectItems}
+              description='If study subjects field is empty it means you need to add it to your profile.'
+            />
+            <TaskUpdaterSelect
+              label='Status'
+              colName='status'
+              initialFormValue={props.status}
+              taskId={props.id as string}
+              selectItems={taskStatusSelectItems}
             />
           </div>
         </section>
