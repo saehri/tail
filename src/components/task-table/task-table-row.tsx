@@ -1,5 +1,7 @@
 'use client';
 
+import {useAppSelector} from '@/redux/utils';
+import {selectClassSubjects} from '@/redux/user/user-slice';
 import {Task} from '@/redux/todos/todo-slice';
 
 import TaskColsTitle from './table-row-primitives/task-cols-title';
@@ -65,8 +67,6 @@ const taskPrioritySelectItems = [
     icon: <ArrowUpIcon className='text-muted-foreground' />,
   },
 ];
-
-const taskSubjectSelectItems = [{value: '-', label: '-'}];
 
 const taskStatusSelectItems = [
   {
@@ -152,14 +152,11 @@ export default function TaskTableRow(props: Task) {
           </div>
 
           <div className='grid grid-cols-2 gap-2'>
-            <TaskUpdaterSelect
-              label='Subjects'
-              colName='subjects'
-              initialFormValue={props.subjects}
+            <ClassSubjectsUpdater
               taskId={props.id as string}
-              selectItems={taskSubjectSelectItems}
-              description='If study subjects field is empty it means you need to add it to your profile.'
+              initialFormValue={props.subjects}
             />
+
             <TaskUpdaterSelect
               label='Status'
               colName='status'
@@ -173,5 +170,29 @@ export default function TaskTableRow(props: Task) {
         </section>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface ClassSubjectsUpdater {
+  taskId: string;
+  initialFormValue: string;
+}
+
+function ClassSubjectsUpdater(props: ClassSubjectsUpdater) {
+  const s = useAppSelector(selectClassSubjects);
+  const userClassSubjects = s.length
+    ? s?.map((subject) => ({label: subject, value: subject}))
+    : [];
+  const classSubjects = [...userClassSubjects, {value: '-', label: '-'}];
+
+  return (
+    <TaskUpdaterSelect
+      label='Subjects'
+      colName='subjects'
+      initialFormValue={props.initialFormValue}
+      taskId={props.taskId}
+      selectItems={classSubjects}
+      description='If study subjects field is empty it means you need to add it to your profile.'
+    />
   );
 }

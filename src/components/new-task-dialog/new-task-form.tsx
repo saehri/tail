@@ -42,8 +42,9 @@ import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover';
 import {Calendar} from '../ui/calendar';
 import TimeSelector from './time-selector';
 
-import {useAppDispatch} from '@/redux/utils';
+import {useAppDispatch, useAppSelector} from '@/redux/utils';
 import {Task, addTodo} from '@/redux/todos/todo-slice';
+import {selectClassSubjects} from '@/redux/user/user-slice';
 
 const formSchema = z.object({
   title: z
@@ -63,6 +64,7 @@ const formSchema = z.object({
 
 export default function NewTaskForm() {
   const dispatch = useAppDispatch();
+  const classSubjects = useAppSelector(selectClassSubjects);
 
   // The code bellow define the initial state and structures of the form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -257,7 +259,7 @@ export default function NewTaskForm() {
                 className='w-full flex gap-4 justify-between items-center font-normal'
                 disabled
               >
-                00 : 00
+                00:00
                 <ClockIcon className='text-muted-foreground' />
               </Button>
             ) : (
@@ -305,6 +307,7 @@ export default function NewTaskForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    <RenderClassSubjects subjects={classSubjects as string[]} />
                     <SelectItem value='-'>-</SelectItem>
                   </SelectContent>
                 </Select>
@@ -369,4 +372,22 @@ export default function NewTaskForm() {
       </form>
     </Form>
   );
+}
+
+interface RenderClassSubjects {
+  subjects: string[];
+}
+
+export function RenderClassSubjects(props: RenderClassSubjects) {
+  if (props.subjects.length)
+    return (
+      <>
+        {props.subjects.map((subject) => (
+          <SelectItem key={subject} value={subject.toLowerCase()}>
+            {subject}
+          </SelectItem>
+        ))}
+      </>
+    );
+  else return <></>;
 }

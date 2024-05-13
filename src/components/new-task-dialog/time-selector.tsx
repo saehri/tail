@@ -1,6 +1,6 @@
 'use client';
 
-import {FormEvent, useState} from 'react';
+import {FormEvent, KeyboardEvent, useState} from 'react';
 
 import {ClockIcon} from '@radix-ui/react-icons';
 import {Button} from '../ui/button';
@@ -18,19 +18,20 @@ export default function TimeSelector(props: TimeSelectorTypes) {
   const ftime = getFormattedTime(props.currentDate);
   const [time, setTime] = useState(ftime.f_hours + ':' + ftime.f_minutes);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    const convertedString = convertToTime(time);
+  function handleKeydown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter') {
+      const convertedString = convertToTime(time);
 
-    if (convertedString === 'invalid') return setOpen(false);
-    const dueDate = props.currentDate;
-    dueDate.setHours(convertedString.hours);
-    dueDate.setMinutes(convertedString.minutes);
-    props.setDateValue(dueDate);
+      if (convertedString === 'invalid') return setOpen(false);
+      const dueDate = props.currentDate;
+      dueDate.setHours(convertedString.hours);
+      dueDate.setMinutes(convertedString.minutes);
+      props.setDateValue(dueDate);
 
-    const nftime = getFormattedTime(dueDate);
-    setTime(nftime.f_hours + ':' + nftime.f_minutes);
-    setOpen(false);
+      const nftime = getFormattedTime(dueDate);
+      setTime(nftime.f_hours + ':' + nftime.f_minutes);
+      setOpen(false);
+    }
   }
 
   return (
@@ -47,22 +48,19 @@ export default function TimeSelector(props: TimeSelectorTypes) {
       </PopoverTrigger>
 
       <PopoverContent align='end' className='p-0 w-28'>
-        <form
-          onSubmit={handleSubmit}
-          className='flex items-center border-b border-border p-2'
-        >
+        <div className='flex items-center border-b border-border p-2'>
           <ClockIcon className='text-muted-foreground shrink-0' />
 
           <input
             type='text'
             className='border-none outline-none px-2 text-sm bg-transparent w-full'
             placeholder='Set time'
-            name='time'
-            onChange={(ev) => setTime(ev.target.value)}
+            onChange={(e) => setTime(e.target.value)}
+            onKeyDown={handleKeydown}
             aria-describedby='timeInputDescription'
             value={time}
           />
-        </form>
+        </div>
 
         <div
           id='timeInputDescription'

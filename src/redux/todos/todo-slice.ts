@@ -12,52 +12,9 @@ export interface Todo {
   searchKeywords: string;
 }
 
-const dummyData: Task[] = [
-  {
-    id: '01',
-    title: 'Create a presentation about the types of learning',
-    description: 'lore, ipsum',
-    priority: 'low',
-    status: 'todo',
-    subjects: 'Machine Learning',
-    dueDate: undefined,
-    type: 'task',
-  },
-  {
-    id: '02',
-    title: 'Session 14 - Stakeholders and Consumer',
-    description: 'lore, ipsum',
-    priority: 'medium',
-    status: 'pending',
-    subjects: 'Software Analysis and Design',
-    dueDate: undefined,
-    type: 'quiz',
-  },
-  {
-    id: '03',
-    title: 'Build a small Chat Bot',
-    description: 'lore, ipsum',
-    priority: 'high',
-    status: 'ongoing',
-    subjects: 'Artificial Intelligence',
-    dueDate: undefined,
-    type: 'task',
-  },
-  {
-    id: '04',
-    title: 'Codes the UI for the expense tracker app',
-    description: 'lore, ipsum',
-    priority: 'high',
-    status: 'done',
-    subjects: 'Object Oriented Programming',
-    dueDate: undefined,
-    type: 'quiz',
-  },
-];
-
 const initialState: Todo = {
-  todos: [...dummyData],
-  actives: [...dummyData],
+  todos: [],
+  actives: [],
   inactives: [],
   state: 'idle',
   filterStatusKeywords: [],
