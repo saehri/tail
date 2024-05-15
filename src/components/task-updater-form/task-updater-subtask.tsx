@@ -114,15 +114,21 @@ interface SubtaskItem extends Subtask {
 function SubtaskItem(props: SubtaskItem) {
   const [editing, setEditing] = useState<boolean>(false);
 
+  function toggleSubtaskStatus() {
+    const newStatus = props.status === 'todo' ? 'done' : 'todo';
+    props.handleUpdateSubtask(props.id, 'status', newStatus);
+  }
+
   return (
     <li className='grid grid-cols-[16px,_1fr] items-center h-9 p-2 rounded-md text-sm gap-2 bg-secondary/90 hover:bg-secondary/50 text-foreground relative group'>
-      <button aria-label='Toggle subtask status'>
-        {props.status === 'todo' ? (
-          <CircleIcon className='text-primary' />
-        ) : (
-          <CheckCircledIcon />
-        )}
+      <button
+        aria-label='Toggle subtask status'
+        className='text-primary'
+        onClick={toggleSubtaskStatus}
+      >
+        {props.status === 'todo' ? <CircleIcon /> : <CheckCircledIcon />}
       </button>
+
       <button
         aria-label='Delete subtask'
         className='absolute top-1/2 -translate-y-1/2 right-2 text-foreground opacity-0 group-hover:opacity-100 transition-opacity'
@@ -142,7 +148,11 @@ function SubtaskItem(props: SubtaskItem) {
       ) : (
         <button
           onClick={() => setEditing(true)}
-          className='inline-block text-left'
+          className={cn(
+            'inline-block text-left',
+            props.status === 'done' &&
+              'line-through italic text-sm text-foreground'
+          )}
         >
           {props.title}
         </button>
@@ -177,7 +187,7 @@ function InputFormUpdater(props: InputFormUpdater) {
       onKeyDown={handleKeydown}
       onChange={(e) => setInputValue(e.target.value)}
       autoFocus
-      className='w-[calc(100%-24px)] h-full block bg-none border-none focus:outline-1 outline-none outline-primary bg-transparent'
+      className='w-[calc(100%-24px)] h-full block bg-none border-none focus:outline-1 outline-none outline-primary bg-transparent text-sm text-foreground'
     />
   );
 }
