@@ -13,22 +13,9 @@ export interface Todo {
   searchKeywords: string;
 }
 
-const dummy: Task = {
-  id: '1',
-  description: 'Our main goals',
-  priority: 'high',
-  status: 'ongoing',
-  subjects: 'Software Analysis and Design',
-  subtasks: [],
-  subtasks_progress: 0,
-  title: 'Build a Todo App',
-  type: 'task',
-  dueDate: undefined,
-};
-
 const initialState: Todo = {
-  originalTodos: [dummy],
-  activeTodos: [dummy],
+  originalTodos: [],
+  activeTodos: [],
   inactiveTodos: [],
   state: 'idle',
   filterStatusKeywords: [],
@@ -87,6 +74,9 @@ export const todoSlice = createSlice({
       );
 
       currentTodo.subtasks = newSubtaskState;
+      currentTodo.subtasks_progress = newSubtaskState.filter(
+        (subtask) => subtask.status === 'done'
+      ).length;
 
       state.originalTodos = state.originalTodos.filter((todo) => {
         if (todo.id === action.payload.taskId) return currentTodo;
@@ -104,7 +94,18 @@ export const todoSlice = createSlice({
             else return subtask;
           });
 
-          return {...todo, subtasks: updatedSubtasks};
+          let doneSubtaskCount: number = 0;
+          if (colName === 'status') {
+            doneSubtaskCount = updatedSubtasks.filter(
+              (subtask) => subtask.status === 'done'
+            ).length;
+          }
+
+          return {
+            ...todo,
+            subtasks: updatedSubtasks,
+            subtasks_progress: doneSubtaskCount,
+          };
         } else return todo;
       });
 

@@ -151,7 +151,7 @@ function SubtaskItem(props: SubtaskItem) {
           className={cn(
             'inline-block text-left',
             props.status === 'done' &&
-              'line-through italic text-sm text-foreground'
+              'line-through italic text-sm text-foreground decoration-primary'
           )}
         >
           {props.title}
