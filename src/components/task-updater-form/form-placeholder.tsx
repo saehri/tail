@@ -11,7 +11,7 @@ interface FormPlaceholder {
 export default function FormPlaceholder(props: FormPlaceholder) {
   return (
     <div className='flex flex-col gap-3 w-full'>
-      <span className='font-semibold text-sm'>{props.label}</span>
+      <span className='text-sm'>{props.label}</span>
 
       <button
         onClick={props.startEditing}

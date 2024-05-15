@@ -29,7 +29,7 @@ export default function DeleteTaskModal(props: DeleteTaskModal) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant='destructive' className='gap-2'>
-          <TrashIcon /> Delete task
+          <TrashIcon /> Delete
         </Button>
       </DialogTrigger>
 

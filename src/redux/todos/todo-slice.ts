@@ -1,10 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../store';
+import {generateUniqueId} from '@/lib/utils';
 
 export interface Todo {
-  todos: Task[];
-  actives: Task[];
-  inactives: Task[];
+  originalTodos: Task[];
+  activeTodos: Task[];
+  inactiveTodos: Task[];
   state: 'fetching' | 'syncing' | 'uploading' | 'idle';
   filterStatusKeywords: TaskStatusTypes[];
   filterPriorityKeywords: TaskPriorityTypes[];
@@ -12,10 +13,23 @@ export interface Todo {
   searchKeywords: string;
 }
 
+const dummy: Task = {
+  id: '1',
+  description: 'Our main goals',
+  priority: 'high',
+  status: 'ongoing',
+  subjects: 'Software Analysis and Design',
+  subtasks: [],
+  subtasks_progress: 0,
+  title: 'Build a Todo App',
+  type: 'task',
+  dueDate: undefined,
+};
+
 const initialState: Todo = {
-  todos: [],
-  actives: [],
-  inactives: [],
+  originalTodos: [dummy],
+  activeTodos: [dummy],
+  inactiveTodos: [],
   state: 'idle',
   filterStatusKeywords: [],
   filterPriorityKeywords: [],
@@ -24,26 +38,77 @@ const initialState: Todo = {
 };
 
 export const todoSlice = createSlice({
-  name: 'todos',
+  name: 'originalTodos',
   initialState,
   reducers: {
     addTodo(state, action: PayloadAction<Task>) {
-      state.todos.unshift(action.payload);
-      state.actives.unshift(action.payload);
+      state.originalTodos.unshift(action.payload);
+      state.activeTodos.unshift(action.payload);
     },
     updateTodo(state, action: PayloadAction<UpdateTodoPayload>) {
       // select an entry
-      state.todos = state.todos.map((todo) => {
+      state.originalTodos = state.originalTodos.map((todo) => {
         if (todo.id === action.payload.id) {
           return {...todo, [action.payload.colName]: action.payload.value};
         } else return todo;
       });
 
-      state.actives = state.todos;
+      state.activeTodos = state.originalTodos;
     },
     deleteTodo(state, action: PayloadAction<string>) {
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-      state.actives = state.todos;
+      state.originalTodos = state.originalTodos.filter(
+        (todo) => todo.id !== action.payload
+      );
+      state.activeTodos = state.originalTodos;
+    },
+    addSubtask(state, action: PayloadAction<{taskId: string}>) {
+      const tempId = generateUniqueId();
+      const currentTodo = state.originalTodos.filter(
+        (todo) => todo.id === action.payload.taskId
+      )[0];
+
+      currentTodo.subtasks.push({
+        id: tempId,
+        title: 'Lorem ipsum dolor sit amet',
+        status: 'todo',
+      });
+
+      state.activeTodos = state.originalTodos;
+    },
+    deleteSubtask(
+      state,
+      action: PayloadAction<{taskId: string; subtaskId: string}>
+    ) {
+      const currentTodo = state.originalTodos.filter(
+        (todo) => todo.id === action.payload.taskId
+      )[0];
+      const newSubtaskState = currentTodo.subtasks.filter(
+        (subtask) => subtask.id !== action.payload.subtaskId
+      );
+
+      currentTodo.subtasks = newSubtaskState;
+
+      state.originalTodos = state.originalTodos.filter((todo) => {
+        if (todo.id === action.payload.taskId) return currentTodo;
+        else return todo;
+      });
+
+      state.activeTodos = state.originalTodos;
+    },
+    updateSubtask(state, action: PayloadAction<UpdateSubtaskPayload>) {
+      const {taskId, subtaskId, colName, value} = action.payload;
+      state.originalTodos = state.originalTodos.map((todo) => {
+        if (todo.id === taskId) {
+          const updatedSubtasks = todo.subtasks.map((subtask) => {
+            if (subtask.id === subtaskId) return {...subtask, [colName]: value};
+            else return subtask;
+          });
+
+          return {...todo, subtasks: updatedSubtasks};
+        } else return todo;
+      });
+
+      state.activeTodos = state.originalTodos;
     },
     setKeywordsForStatusFilter(state, action: PayloadAction<TaskStatusTypes>) {
       if (state.filterStatusKeywords.includes(action.payload)) {
@@ -84,7 +149,7 @@ export const todoSlice = createSlice({
         ? filterCategory.type
         : ['quiz', 'task'];
 
-      state.actives = state.todos.filter(
+      state.activeTodos = state.originalTodos.filter(
         (todo) =>
           status.includes(todo.status) &&
           priority.includes(todo.priority) &&
@@ -109,6 +174,9 @@ export const {
   addTodo,
   updateTodo,
   deleteTodo,
+  addSubtask,
+  deleteSubtask,
+  updateSubtask,
   filterTodos,
   setKeywordsForStatusFilter,
   setKeywordsForPriorityFilter,
@@ -117,12 +185,14 @@ export const {
   clearFilterKeywords,
 } = todoSlice.actions;
 
+// -------------------- SELECTOR
+
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectTodos = (state: RootState) => state.todos.todos;
+export const selectTodos = (state: RootState) => state.todos.originalTodos;
 export const selectState = (state: RootState) => state.todos.state;
-export const selectTodoDisplay = (state: RootState) => state.todos.actives;
+export const selectTodoDisplay = (state: RootState) => state.todos.activeTodos;
 export const selectFilterStatus = (state: RootState) =>
   state.todos.filterStatusKeywords;
 export const selectFilterPriority = (state: RootState) =>
@@ -132,7 +202,7 @@ export const selectFilterType = (state: RootState) =>
 export const selectSearchKeywords = (state: RootState) =>
   state.todos.searchKeywords;
 
-// PRIMITIVES TYPES
+// -------------------- PRIMITIVES TYPES
 type FilterTodoPayloadTypes = {
   status: TaskStatusTypes[];
   priority: TaskPriorityTypes[];
@@ -146,13 +216,19 @@ type UpdateTodoPayload = {
   colName: string;
 };
 
+type UpdateSubtaskPayload = {
+  taskId: string;
+  subtaskId: string;
+  colName: string;
+  value: string;
+};
+
 export type TaskTypeTypes = 'task' | 'quiz';
 export type TaskStatusTypes = 'todo' | 'ongoing' | 'pending' | 'done';
 export type TaskPriorityTypes = 'low' | 'medium' | 'high';
 
 export interface Task {
-  id?: string;
-  progress?: string;
+  id: string;
   title: string;
   type: TaskTypeTypes;
   status: TaskStatusTypes;
@@ -160,4 +236,12 @@ export interface Task {
   description: string;
   subjects: string;
   dueDate?: string;
+  subtasks: Subtask[];
+  subtasks_progress: number;
+}
+
+export interface Subtask {
+  id: string;
+  title: string;
+  status: 'todo' | 'done';
 }

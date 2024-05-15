@@ -28,7 +28,7 @@ export default function TaskUpdaterTextArea(props: TaskUpdaterTextArea) {
   if (!form.isEditing) {
     return (
       <div className='flex flex-col gap-3 text-left w-full'>
-        <span className='inline-block text-sm font-semibold text-foreground'>
+        <span className='inline-block text-sm text-foreground'>
           {props.label}
         </span>
 
